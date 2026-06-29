@@ -39,16 +39,6 @@
         </div>
     </header>
 
-    <!-- Indicador de Navegación Lateral (Diapositivas) -->
-    <nav class="side-nav" aria-label="Navegación de diapositivas">
-        <ul>
-            <li><a href="#hero" class="nav-dot active" data-slide="0"><span class="nav-tooltip">Portada</span></a></li>
-            <li><a href="#pos" class="nav-dot" data-slide="1"><span class="nav-tooltip">Punto de Venta</span></a></li>
-            <li><a href="#inventario" class="nav-dot" data-slide="2"><span class="nav-tooltip">Inventario</span></a></li>
-            <li><a href="#auditoria" class="nav-dot" data-slide="3"><span class="nav-tooltip">Cortes e Impuestos</span></a></li>
-            <li><a href="#seguridad" class="nav-dot" data-slide="4"><span class="nav-tooltip">Seguridad</span></a></li>
-        </ul>
-    </nav>
 
     <!-- Contenedor Principal con Scroll Snap -->
     <main class="slides-container">
@@ -66,7 +56,7 @@
                         Automatice sus operaciones, elimine las pérdidas de inventario y optimice su facturación con la plataforma POS diseñada para dueños de negocios que buscan el éxito financiero.
                     </p>
                     <div class="hero-actions">
-                        <a href="#pos" class="btn btn-primary" id="btn-discover">
+                        <a href="#seccion-inventario" class="btn btn-primary" id="btn-discover">
                             <span>Descubrir más</span>
                             <svg class="icon-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
                         </a>
@@ -291,7 +281,7 @@
         </section>
 
         <!-- DIAPOSITIVA 3: CONTROL DE INVENTARIO -->
-        <section id="inventario" class="slide">
+        <section id="seccion-inventario" class="slide">
             <div class="slide-content grid-2">
                 <div class="text-side reveal-item">
                     <div class="badge-accent">ALMACÉN INTELIGENTE</div>
@@ -714,15 +704,6 @@
         </div>
     </div>
 
-    <!-- Botones de Navegación Física (Adelante/Atrás) -->
-    <div class="slides-navigation-controls">
-        <button id="nav-btn-prev" class="nav-control-btn" aria-label="Diapositiva anterior" title="Diapositiva anterior">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-        </button>
-        <button id="nav-btn-next" class="nav-control-btn" aria-label="Siguiente diapositiva" title="Siguiente diapositiva">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-    </div>
 
     <!-- Script de lógica de la aplicación -->
     <script src="script.js"></script>

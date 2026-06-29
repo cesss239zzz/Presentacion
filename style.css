@@ -54,7 +54,7 @@ body {
     font-family: var(--font-body);
     color: var(--text-primary);
     background-color: var(--bg-dark);
-    overflow: hidden; /* Controlado por el snap container */
+    overflow-x: hidden;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
 }
@@ -76,7 +76,7 @@ body {
 
 /* Canvas para Partículas de Fondo */
 #particles-canvas {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -87,7 +87,7 @@ body {
 
 /* Luces Ambientales Traseras */
 .ambient-glows {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -213,89 +213,22 @@ body {
     font-weight: 550;
 }
 
-/* Navegación Lateral (Diapositivas) */
-.side-nav {
-    position: fixed;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 99;
-}
 
-.side-nav ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.nav-dot {
-    display: block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.15);
-    border: 2px solid transparent;
-    transition: all var(--transition-speed) var(--transition-smooth);
-    position: relative;
-}
-
-.nav-dot:hover {
-    background-color: var(--cyan);
-    transform: scale(1.3);
-}
-
-.nav-dot.active {
-    background-color: transparent;
-    border-color: var(--cyan);
-    transform: scale(1.4);
-    box-shadow: 0 0 10px var(--cyan-glow);
-}
-
-.nav-tooltip {
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%) translateX(10px);
-    background: rgba(18, 20, 32, 0.9);
-    border: 1px solid var(--border-color);
-    color: #fff;
-    padding: 4px 10px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s var(--transition-smooth);
-}
-
-.nav-dot:hover .nav-tooltip {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-}
 
 /* Contenedor Snap de Diapositivas */
 .slides-container {
-    height: 100vh;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
     position: relative;
     z-index: 2;
 }
 
 /* Diapositiva Base */
 .slide {
-    height: 100vh;
     min-height: 100vh;
-    scroll-snap-align: start;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 100px 2rem 40px;
     position: relative;
-    overflow: hidden;
 }
 
 .slide-content {
@@ -1735,19 +1668,6 @@ input:checked + .slider:before {
 
     .slide {
         padding: 90px 1.5rem 30px;
-        height: auto;
-        min-height: 100vh;
-        scroll-snap-align: none;
-    }
-    
-    .slides-container {
-        height: auto;
-        overflow-y: visible;
-        scroll-snap-type: none;
-    }
-
-    .side-nav {
-        display: none; /* Ocultar side bullets en móviles para ganar espacio */
     }
 
     .hero-visual-area, .visual-side {
@@ -1796,62 +1716,7 @@ input:checked + .slider:before {
     }
 }
 
-/* Botones de Navegación Física (Adelante/Atrás) */
-.slides-navigation-controls {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    z-index: 101;
-}
 
-.nav-control-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(18, 20, 32, 0.7);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s var(--transition-bounce);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.nav-control-btn:hover:not(:disabled) {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    transform: translateY(-3px);
-    box-shadow: 0 0 15px var(--cyan-glow), 0 6px 20px rgba(0, 210, 255, 0.15);
-}
-
-.nav-control-btn:active:not(:disabled) {
-    transform: translateY(-1px);
-}
-
-.nav-control-btn:disabled {
-    opacity: 0.15;
-    cursor: not-allowed;
-    border-color: var(--border-color);
-    color: var(--text-muted);
-}
-
-@media (max-width: 1024px) {
-    .slides-navigation-controls {
-        bottom: 1.5rem;
-        right: 1.5rem;
-    }
-    
-    .nav-control-btn {
-        width: 44px;
-        height: 44px;
-    }
-}
 
 /* ==========================================================================
    NUEVOS ESTILOS PARA INTERACTIVIDAD AVANZADA

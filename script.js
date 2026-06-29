@@ -88,46 +88,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================================================
-    // 2. INTERSECTION OBSERVER PARA DIAPOSITIVAS & NAV BULLETS
+    // 2. INTERSECTION OBSERVER PARA DIAPOSITIVAS & REVELACIONES
     // ==========================================================================
     const slides = document.querySelectorAll(".slide");
-    const navDots = document.querySelectorAll(".nav-dot");
-    const btnPrev = document.getElementById("nav-btn-prev");
-    const btnNext = document.getElementById("nav-btn-next");
-    let currentSlideIndex = 0;
     
-    // Opciones del observador: mayoritariamente visible en el viewport
+    // Opciones del observador: activar al 15% de visibilidad para suavidad
     const observerOptions = {
         root: null,
         rootMargin: "0px",
-        threshold: 0.5
+        threshold: 0.15
     };
 
     const slideObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Remover clase active-slide de todos
-                slides.forEach(s => s.classList.remove("active-slide"));
-                // Añadir a la visible
                 entry.target.classList.add("active-slide");
-                
-                // Encontrar el índice de la diapositiva actual
-                const slideArray = Array.from(slides);
-                currentSlideIndex = slideArray.indexOf(entry.target);
-                
-                // Actualizar estado de los botones físicos
-                updateNavigationButtons();
-                
-                // Actualizar bullets laterales
-                const slideId = entry.target.id;
-                navDots.forEach(dot => {
-                    const href = dot.getAttribute("href").substring(1);
-                    if (href === slideId) {
-                        dot.classList.add("active");
-                    } else {
-                        dot.classList.remove("active");
-                    }
-                });
             }
         });
     }, observerOptions);
@@ -136,48 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
         slideObserver.observe(slide);
     });
 
-    // Controlar la habilitación de los botones físicos
-    function updateNavigationButtons() {
-        if (!btnPrev || !btnNext) return;
-        btnPrev.disabled = (currentSlideIndex === 0);
-        btnNext.disabled = (currentSlideIndex === slides.length - 1);
-    }
-
-    // Eventos de clic para los botones de navegación física
-    if (btnPrev) {
-        btnPrev.addEventListener("click", () => {
-            if (currentSlideIndex > 0) {
-                slides[currentSlideIndex - 1].scrollIntoView({ behavior: "smooth" });
-            }
-        });
-    }
-
-    if (btnNext) {
-        btnNext.addEventListener("click", () => {
-            if (currentSlideIndex < slides.length - 1) {
-                slides[currentSlideIndex + 1].scrollIntoView({ behavior: "smooth" });
-            }
-        });
-    }
-
-    // Desplazamiento Suave al hacer clic en Dots
-    navDots.forEach(dot => {
-        dot.addEventListener("click", (e) => {
-            e.preventDefault();
-            const targetId = dot.getAttribute("href");
-            const targetSlide = document.querySelector(targetId);
-            if (targetSlide) {
-                targetSlide.scrollIntoView({ behavior: "smooth" });
-            }
-        });
-    });
-
     // Botón "Descubrir más" en Hero
     const btnDiscover = document.getElementById("btn-discover");
     if (btnDiscover) {
         btnDiscover.addEventListener("click", (e) => {
             e.preventDefault();
-            const targetSlide = document.querySelector("#pos");
+            const targetSlide = document.querySelector("#seccion-inventario");
             if (targetSlide) {
                 targetSlide.scrollIntoView({ behavior: "smooth" });
             }
