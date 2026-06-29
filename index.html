@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VK-System | El Control Total e Inteligente de su Negocio</title>
+    <meta name="description" content="VK-System: Punto de Venta ágil, inventario en tiempo real y seguridad automatizada a prueba de fallas. Diseñado para maximizar sus ganancias.">
+    
+    <!-- Google Fonts: Outfit (modern headlines) & Plus Jakarta Sans (clean UI text) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Canvas para el fondo tecnológico interactivo -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Fondo de gradiente ambiental flotante -->
+    <div class="ambient-glows">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
+
+    <!-- Header / Navbar Principal -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-vk">VK</span><span class="logo-system">-System</span>
+                <span class="logo-badge">PRO</span>
+            </div>
+            <div class="header-status">
+                <span class="status-dot animate-pulse"></span>
+                <span class="status-text">Demostración Activa</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Indicador de Navegación Lateral (Diapositivas) -->
+    <nav class="side-nav" aria-label="Navegación de diapositivas">
+        <ul>
+            <li><a href="#hero" class="nav-dot active" data-slide="0"><span class="nav-tooltip">Portada</span></a></li>
+            <li><a href="#pos" class="nav-dot" data-slide="1"><span class="nav-tooltip">Punto de Venta</span></a></li>
+            <li><a href="#inventario" class="nav-dot" data-slide="2"><span class="nav-tooltip">Inventario</span></a></li>
+            <li><a href="#auditoria" class="nav-dot" data-slide="3"><span class="nav-tooltip">Cortes e Impuestos</span></a></li>
+            <li><a href="#seguridad" class="nav-dot" data-slide="4"><span class="nav-tooltip">Seguridad</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenedor Principal con Scroll Snap -->
+    <main class="slides-container">
+
+        <!-- DIAPOSITIVA 1: HERO / PORTADA -->
+        <section id="hero" class="slide active-slide">
+            <div class="slide-content grid-2">
+                <div class="hero-text-area reveal-item">
+                    <div class="badge-accent">SISTEMA POS PREMIUM</div>
+                    <h1 class="hero-title">
+                        <span class="gradient-text-cyan">VK-System</span>
+                    </h1>
+                    <p class="hero-subtitle">El control total e inteligente para su negocio</p>
+                    <p class="hero-description">
+                        Automatice sus operaciones, elimine las pérdidas de inventario y optimice su facturación con la plataforma POS diseñada para dueños de negocios que buscan el éxito financiero.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#pos" class="btn btn-primary" id="btn-discover">
+                            <span>Descubrir más</span>
+                            <svg class="icon-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        </a>
+                        <div class="badge-security">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <span>100% Autónomo y Seguro</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-visual-area reveal-item delay-1">
+                    <!-- Dashboard Mockup Interactivo Flotante -->
+                    <div class="dashboard-mockup">
+                        <div class="mockup-header">
+                            <div class="mockup-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="mockup-title">VK-System Dashboard v2.6</div>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="mockup-stats-grid">
+                                <div class="stat-card border-cyan">
+                                    <span class="stat-label">Ventas del Día</span>
+                                    <span class="stat-value text-cyan" id="live-sales-val">L 12,450.00</span>
+                                    <span class="stat-indicator positive">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> +18.4%
+                                    </span>
+                                </div>
+                                <div class="stat-card border-emerald">
+                                    <span class="stat-label">Margen de Ganancia</span>
+                                    <span class="stat-value text-emerald">32.8%</span>
+                                    <span class="stat-indicator positive">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> Estable
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mockup-chart-container">
+                                <div class="chart-header">
+                                    <span>Rendimiento Semanal</span>
+                                    <span class="chart-legend"><span class="legend-dot cyan"></span>Ventas</span>
+                                </div>
+                                <div class="css-chart">
+                                    <div class="chart-bar" style="--height: 45%"></div>
+                                    <div class="chart-bar" style="--height: 60%"></div>
+                                    <div class="chart-bar" style="--height: 55%"></div>
+                                    <div class="chart-bar" style="--height: 75%"></div>
+                                    <div class="chart-bar active" style="--height: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="mockup-recent">
+                                <div class="recent-item">
+                                    <span class="recent-time">Hace 1 min</span>
+                                    <span class="recent-desc">Factura #4023 emitida</span>
+                                    <span class="recent-amount text-emerald">+L 350.00</span>
+                                </div>
+                                <div class="recent-item">
+                                    <span class="recent-time">Hace 5 min</span>
+                                    <span class="recent-desc">Carga rápida Stock</span>
+                                    <span class="recent-amount text-cyan">+10 Unidades</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-hint">
+                <span>Deslice para explorar</span>
+                <div class="mouse-icon"><div class="wheel"></div></div>
+            </div>
+        </section>
+
+        <!-- DIAPOSITIVA 2: PUNTO DE VENTA ÁGIL -->
+        <section id="pos" class="slide">
+            <div class="slide-content grid-2">
+                <div class="text-side reveal-item">
+                    <div class="badge-accent">MÓDULO DE VENTA EN TIEMPO REAL</div>
+                    <h2 class="slide-title">Punto de Venta <span class="gradient-text-cyan">Ultra Rápido</span></h2>
+                    <p class="slide-lead">La velocidad en caja es dinero. Olvídese de sistemas lentos que frustran a sus clientes.</p>
+                    
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon bg-cyan">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            </div>
+                            <div>
+                                <h4>Carrito Dinámico en 1 Clic</h4>
+                                <p>Agregue productos al instante, modifique cantidades y aplique descuentos sin recargar la pantalla.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon bg-emerald">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            </div>
+                            <div>
+                                <h4>Lógica Fiscal Automatizada</h4>
+                                <p>El sistema detecta automáticamente si el cliente requiere factura legal con RTN. Si no ingresa RTN, factura de inmediato como <strong>Consumidor Final</strong> para ahorrar tiempo en fila.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-side reveal-item delay-1">
+                    <!-- Simulador Interactivo de POS -->
+                    <div class="interactive-card pos-simulator">
+                        <div class="simulator-header">
+                            <span class="sim-badge bg-cyan">Simulador Interactivo</span>
+                            <h3>Caja Registradora VK</h3>
+                        </div>
+                        <div class="simulator-body">
+                            <!-- Productos a agregar -->
+                            <div class="sim-products-shelf">
+                                <button class="btn-product-add" data-name="Soda Premium" data-price="25.00">
+                                    <span>Soda Premium</span>
+                                    <strong>L 25.00</strong>
+                                </button>
+                                <button class="btn-product-add" data-name="Café Americano" data-price="45.00">
+                                    <span>Café Americano</span>
+                                    <strong>L 45.00</strong>
+                                </button>
+                                <button class="btn-product-add" data-name="Pan de Mantequilla" data-price="18.00">
+                                    <span>Pan Mantequilla</span>
+                                    <strong>L 18.00</strong>
+                                </button>
+                            </div>
+
+                            <!-- Carrito actual -->
+                            <div class="sim-cart-container">
+                                <h4>Detalle de la Venta</h4>
+                                <div class="sim-cart-list" id="pos-cart-list">
+                                    <div class="cart-empty-msg">El carrito está vacío. Toque productos arriba para agregarlos.</div>
+                                </div>
+                                <div class="sim-cart-total-row">
+                                    <span>Subtotal:</span>
+                                    <span id="pos-subtotal">L 0.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Lógica de Facturación con RTN -->
+                            <div class="sim-fiscal-box">
+                                <div class="fiscal-toggle-row">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="rtn-toggle">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span class="toggle-label">¿Requiere Factura Legal con RTN?</span>
+                                </div>
+                                <div class="rtn-input-wrapper hidden" id="rtn-input-wrapper">
+                                    <input type="text" id="rtn-field" placeholder="Ingrese el RTN (Ej. 0801-1990-12345)" maxlength="16">
+                                    <div class="rtn-validation-status success-color" id="rtn-status-msg">
+                                        <span class="dot-small"></span>Cliente Validado en Sistema
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-secondary w-full" id="btn-simular-venta" disabled>
+                                <span>Simular Cobro e Impresión</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Simulación de Ticket Impreso que sale de la caja -->
+                        <div class="printed-ticket-wrap" id="printed-ticket-wrap">
+                            <div class="ticket-arrow"></div>
+                            <div class="printed-ticket" id="printed-ticket">
+                                <div class="ticket-header">
+                                    <h3>VK-SYSTEM RETAIL</h3>
+                                    <p>Tegucigalpa, Honduras</p>
+                                    <p>RTN: 0801-9021-394821</p>
+                                    <p class="ticket-divider">************************</p>
+                                </div>
+                                <div class="ticket-info">
+                                    <p>Fecha: <span id="ticket-date">26/06/2026</span></p>
+                                    <p>Factura #: 000-001-01-000492</p>
+                                    <p>Cliente: <strong id="ticket-client-name">CONSUMIDOR FINAL</strong></p>
+                                    <p id="ticket-client-rtn-row" class="hidden">RTN Cliente: <span id="ticket-client-rtn">N/D</span></p>
+                                    <p class="ticket-divider">------------------------</p>
+                                </div>
+                                <div class="ticket-items" id="ticket-items">
+                                    <!-- Dinámico -->
+                                </div>
+                                <div class="ticket-totals">
+                                    <p class="ticket-divider">------------------------</p>
+                                    <p class="flex-between"><span>SUBTOTAL:</span><span id="ticket-subtotal">L 0.00</span></p>
+                                    <p class="flex-between"><span>ISV (15%):</span><span id="ticket-tax">L 0.00</span></p>
+                                    <p class="flex-between font-bold"><span>TOTAL A PAGAR:</span><span id="ticket-total">L 0.00</span></p>
+                                    <p class="ticket-divider">************************</p>
+                                </div>
+                                <div class="ticket-footer">
+                                    <p>¡Gracias por su compra!</p>
+                                    <p>Soporte por VK-System POS</p>
+                                    <div class="barcode">|||| | ||||| || ||| | |||</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIAPOSITIVA 3: CONTROL DE INVENTARIO -->
+        <section id="inventario" class="slide">
+            <div class="slide-content grid-2">
+                <div class="text-side reveal-item">
+                    <div class="badge-accent">ALMACÉN INTELIGENTE</div>
+                    <h2 class="slide-title">Control de Inventario <span class="gradient-text-emerald">Sin Fugas</span></h2>
+                    <p class="slide-lead">Evite pérdidas misteriosas y desabastecimiento. Con VK-System, sabe exactamente qué tiene y dónde está.</p>
+                    
+                    <div class="inventory-perks">
+                        <div class="perk-box">
+                            <span class="perk-badge bg-emerald-light">+ Cargos Rápidos</span>
+                            <p>Registre entradas de mercadería al instante cuando llegue el proveedor. Aumente stock con un solo botón en pantalla.</p>
+                        </div>
+                        <div class="perk-box">
+                            <span class="perk-badge bg-rose-light">- Descargos y Mermas</span>
+                            <p>Reporte de inmediato productos dañados, vencidos o robados. Mantenga su contabilidad limpia y realista.</p>
+                        </div>
+                    </div>
+                    <p class="inventory-footer-text">
+                        <strong>"Stock real, sin fugas ni sorpresas."</strong> Cada movimiento se registra con fecha, hora y usuario responsable.
+                    </p>
+                </div>
+
+                <div class="visual-side reveal-item delay-1">
+                    <!-- Simulador de Ajuste de Stock -->
+                    <div class="interactive-card inventory-widget">
+                        <div class="simulator-header">
+                            <span class="sim-badge bg-emerald">Módulo de Almacén</span>
+                            <h3>Inventario en Vivo</h3>
+                        </div>
+                        <div class="simulator-body">
+                            <div class="stock-list">
+                                <!-- Producto 1 -->
+                                <div class="stock-item-row" data-id="p1">
+                                    <div class="stock-item-info">
+                                        <span class="stock-item-name">Arroz Premium (Libra)</span>
+                                        <span class="stock-item-qty"><strong class="qty-val">120</strong> Unidades</span>
+                                    </div>
+                                    <div class="stock-bar-wrapper">
+                                        <div class="stock-bar bg-emerald" style="width: 80%"></div>
+                                    </div>
+                                    <div class="stock-item-actions">
+                                        <button class="btn-stock-adjust plus" data-id="p1" data-op="add" title="Entrada / Compra">+ Cargo</button>
+                                        <button class="btn-stock-adjust minus" data-id="p1" data-op="sub" title="Salida / Merma">- Merma</button>
+                                    </div>
+                                </div>
+
+                                <!-- Producto 2 -->
+                                <div class="stock-item-row alert-stock" data-id="p2">
+                                    <div class="stock-item-info">
+                                        <span class="stock-item-name">Aceite de Cocina (1L)</span>
+                                        <span class="stock-item-qty"><strong class="qty-val">12</strong> Unidades (Crítico)</span>
+                                    </div>
+                                    <div class="stock-bar-wrapper">
+                                        <div class="stock-bar bg-orange" style="width: 15%"></div>
+                                    </div>
+                                    <div class="stock-item-actions">
+                                        <button class="btn-stock-adjust plus" data-id="p2" data-op="add">+ Cargo</button>
+                                        <button class="btn-stock-adjust minus" data-id="p2" data-op="sub">- Merma</button>
+                                    </div>
+                                </div>
+
+                                <!-- Producto 3 -->
+                                <div class="stock-item-row" data-id="p3">
+                                    <div class="stock-item-info">
+                                        <span class="stock-item-name">Azúcar Refinada (Kg)</span>
+                                        <span class="stock-item-qty"><strong class="qty-val">65</strong> Unidades</span>
+                                    </div>
+                                    <div class="stock-bar-wrapper">
+                                        <div class="stock-bar bg-cyan" style="width: 50%"></div>
+                                    </div>
+                                    <div class="stock-item-actions">
+                                        <button class="btn-stock-adjust plus" data-id="p3" data-op="add">+ Cargo</button>
+                                        <button class="btn-stock-adjust minus" data-id="p3" data-op="sub">- Merma</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bitácora de Auditoría en Tiempo Real -->
+                            <div class="inventory-log-container">
+                                <h4>Registro Reciente de Movimientos</h4>
+                                <div class="inventory-log-list" id="inv-log-list">
+                                    <div class="log-empty">Haga clic en "+ Cargo" o "- Merma" para ver el registro en vivo.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIAPOSITIVA 4: CORTES Y AUDITORÍAS -->
+        <section id="auditoria" class="slide">
+            <div class="slide-content grid-2">
+                <div class="text-side reveal-item">
+                    <div class="badge-accent">TRANSPARENCIA FINANCIERA</div>
+                    <h2 class="slide-title">Cortes de Caja <span class="gradient-text-cyan">al Instante</span></h2>
+                    <p class="slide-lead">¿Cuánto dinero ingresó realmente en efectivo y cuánto por tarjeta? Evite discusiones al final del turno.</p>
+                    
+                    <div class="audit-points">
+                        <div class="audit-card">
+                            <div class="audit-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            </div>
+                            <div class="audit-card-info">
+                                <h3>Cuadre Automático</h3>
+                                <p>Genere el reporte de Corte X o Corte Z con un solo botón. El software separa las formas de pago de forma exacta.</p>
+                            </div>
+                        </div>
+                        <div class="audit-card">
+                            <div class="audit-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                            </div>
+                            <div class="audit-card-info">
+                                <h3>Auditoría Sin Fricción</h3>
+                                <p>Identifique desajustes de efectivo de manera inmediata. Visualice las estadísticas clave de rendimiento y rentabilidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-side reveal-item delay-1">
+                    <!-- Módulo de Auditoría Financiera -->
+                    <div class="interactive-card audit-widget">
+                        <div class="simulator-header">
+                            <span class="sim-badge bg-cyan">Panel Administrativo</span>
+                            <h3>Corte de Turno en Vivo</h3>
+                        </div>
+                        <div class="simulator-body">
+                            <!-- Gráfico de Ventas por Método de Pago -->
+                            <div class="audit-split-viz">
+                                <div class="split-bar-container">
+                                    <div class="split-labels">
+                                        <span>Efectivo (60%)</span>
+                                        <span>Tarjeta (40%)</span>
+                                    </div>
+                                    <div class="split-progress-bar">
+                                        <div class="split-progress bg-emerald" style="width: 60%" id="audit-cash-bar"></div>
+                                        <div class="split-progress bg-cyan" style="width: 40%" id="audit-card-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="audit-stats-grid">
+                                <div class="audit-stat">
+                                    <span>Efectivo Declarado</span>
+                                    <strong class="text-white" id="audit-cash-text">L 7,800.00</strong>
+                                </div>
+                                <div class="audit-stat">
+                                    <span>Tarjeta Declarado</span>
+                                    <strong class="text-white" id="audit-card-text">L 5,200.00</strong>
+                                </div>
+                                <div class="audit-stat full-width highlight-stat">
+                                    <span>Venta Neta Total</span>
+                                    <strong class="text-emerald" id="audit-total-text">L 13,000.00</strong>
+                                </div>
+                            </div>
+
+                            <div class="audit-action-box">
+                                <button class="btn btn-primary w-full" id="btn-run-audit">
+                                    <span>Generar Corte de Caja Z</span>
+                                </button>
+                            </div>
+
+                            <!-- Reporte de auditoría generado en tiempo real -->
+                            <div class="audit-report-output hidden" id="audit-report-output">
+                                <div class="report-header">
+                                    <h4>*** CORTE DE CAJA Z COMPLETO ***</h4>
+                                    <p id="report-timestamp">Fecha: 26/06/2026 18:30:00</p>
+                                </div>
+                                <ul class="report-details">
+                                    <li class="flex-between"><span>Transacciones Realizadas:</span><strong>24 Ventas</strong></li>
+                                    <li class="flex-between"><span>Subtotal Neto:</span><strong>L 11,304.35</strong></li>
+                                    <li class="flex-between"><span>Impuesto ISV 15%:</span><strong>L 1,695.65</strong></li>
+                                    <li class="flex-between"><span>Fondo de Caja Inicial:</span><strong>L 1,000.00</strong></li>
+                                    <li class="flex-between font-bold border-top"><span>Efectivo Esperado:</span><strong>L 8,800.00</strong></li>
+                                    <li class="flex-between font-bold"><span>Venta Tarjeta Registrada:</span><strong>L 5,200.00</strong></li>
+                                    <li class="flex-between font-bold border-top text-emerald"><span>Cuadre de Caja:</span><strong>DIFERENCIA L 0.00 (OK)</strong></li>
+                                </ul>
+                                <div class="report-stamp">VK-System - Reporte Firmado Digitalmente</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIAPOSITIVA 5: SEGURIDAD IMBATIBLE -->
+        <section id="seguridad" class="slide">
+            <div class="slide-content grid-2">
+                <div class="text-side reveal-item">
+                    <div class="badge-accent">SISTEMA A PRUEBA DE FALLOS</div>
+                    <h2 class="slide-title">Seguridad <span class="gradient-text-emerald">Imbatible</span></h2>
+                    <p class="slide-lead">Su información es el activo más valioso de su negocio. Manténgala resguardada de forma autónoma.</p>
+                    
+                    <div class="security-features">
+                        <div class="sec-feature">
+                            <div class="sec-bullet bg-emerald"></div>
+                            <div>
+                                <h4>BackupService Local y Autónomo</h4>
+                                <p>Copia de seguridad local programada que se ejecuta silenciosamente en segundo plano sin interrumpir su trabajo.</p>
+                            </div>
+                        </div>
+                        <div class="sec-feature">
+                            <div class="sec-bullet bg-cyan"></div>
+                            <div>
+                                <h4>Recuperación de Desastres en 1 Clic</h4>
+                                <p>¿Falla de energía? ¿Equipo dañado? Su base de datos comprimida le permite restaurar su Punto de Venta en minutos en cualquier computadora nueva.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-quote">
+                        <p><strong>"Copias de respaldo locales automáticas. Su información, protegida contra cualquier imprevisto."</strong></p>
+                    </div>
+                </div>
+
+                <div class="visual-side reveal-item delay-1">
+                    <!-- Simulador del BackupService -->
+                    <div class="interactive-card security-widget">
+                        <div class="simulator-header">
+                            <span class="sim-badge bg-emerald">Módulo de Seguridad</span>
+                            <h3>VK BackupService</h3>
+                        </div>
+                        <div class="simulator-body">
+                            <div class="backup-shield-container">
+                                <div class="shield-halo animate-pulse"></div>
+                                <div class="shield-core" id="shield-icon">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                </div>
+                                <span class="shield-label" id="shield-status-label">Sistema Protegido</span>
+                            </div>
+
+                            <div class="backup-progress-wrapper hidden" id="backup-progress-wrapper">
+                                <div class="backup-progress-labels">
+                                    <span id="backup-status-text">Analizando archivos...</span>
+                                    <span id="backup-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="backup-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div class="backup-console" id="backup-console">
+                                <div class="console-line text-cyan">> BackupService listo para ejecución local.</div>
+                            </div>
+
+                            <button class="btn btn-secondary w-full" id="btn-run-backup">
+                                <span>Ejecutar Backup Ahora</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Botones de Navegación Física (Adelante/Atrás) -->
+    <div class="slides-navigation-controls">
+        <button id="nav-btn-prev" class="nav-control-btn" aria-label="Diapositiva anterior" title="Diapositiva anterior">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </button>
+        <button id="nav-btn-next" class="nav-control-btn" aria-label="Siguiente diapositiva" title="Siguiente diapositiva">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+    </div>
+
+    <!-- Script de lógica de la aplicación -->
+    <script src="script.js"></script>
+</body>
+</html>
