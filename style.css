@@ -1852,3 +1852,601 @@ input:checked + .slider:before {
         height: 44px;
     }
 }
+
+/* ==========================================================================
+   NUEVOS ESTILOS PARA INTERACTIVIDAD AVANZADA
+   ========================================================================== */
+
+/* Segmented Controls (Selectores tipo Pestaña) */
+.segmented-control {
+    display: flex;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+}
+
+.segment-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-headline);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s var(--transition-smooth);
+    text-align: center;
+}
+
+.segment-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.02);
+    color: #fff;
+}
+
+.segment-btn.active {
+    background: var(--cyan);
+    color: var(--bg-dark);
+    box-shadow: 0 4px 10px var(--cyan-glow);
+}
+
+/* Options Box en POS */
+.sim-options-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.option-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.option-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sim-info-box {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid rgba(0, 210, 255, 0.15);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    animation: slideDown 0.3s var(--transition-smooth);
+}
+
+/* Formulario Registro de Productos (Slide 3) */
+.product-register-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s;
+}
+
+.product-register-card:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.register-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.register-header h4 {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.product-register-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.product-register-card label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.product-register-card input {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.25s;
+}
+
+.product-register-card input:focus {
+    border-color: var(--emerald);
+}
+
+.product-register-card .input-prefix-wrapper {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.product-register-card .input-prefix {
+    position: absolute;
+    left: 10px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+.product-register-card .input-prefix-wrapper input {
+    padding-left: 22px;
+    width: 100%;
+}
+
+.form-row.grid-2-col {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 12px;
+}
+
+/* Modales */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 6, 10, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 0.3s var(--transition-smooth);
+}
+
+.modal-overlay.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-container {
+    background: var(--bg-card-solid);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+@keyframes modalScale {
+    from { transform: scale(0.94); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    font-family: var(--font-headline);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.btn-close-modal {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.6rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.25s;
+}
+
+.btn-close-modal:hover {
+    color: var(--rose);
+}
+
+.modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 1.2rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.01);
+}
+
+/* Estilo Hoja de Impresión Reporte Físico */
+.print-modal {
+    max-width: 740px;
+}
+
+.print-sheet {
+    background: #fff;
+    color: #111;
+    padding: 2.2rem;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.74rem;
+    line-height: 1.45;
+}
+
+.print-sheet-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #111;
+    padding-bottom: 1rem;
+}
+
+.print-sheet-header h2 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 4px;
+}
+
+.print-sheet-header p {
+    color: #444;
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+}
+
+.print-instruction {
+    margin-top: 8px;
+    font-style: italic;
+    background: #f1f5f9;
+    border-left: 3px solid #475569;
+    padding: 6px 10px;
+    color: #334155;
+    text-align: left;
+    border-radius: 0 4px 4px 0;
+}
+
+.print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.print-table th {
+    border-bottom: 2px solid #111;
+    padding: 8px 6px;
+    font-weight: bold;
+    text-align: left;
+    color: #000;
+}
+
+.print-table td {
+    border-bottom: 1px dashed #bbb;
+    padding: 10px 6px;
+    color: #111;
+}
+
+.print-table tr:last-child td {
+    border-bottom: 2px solid #111;
+}
+
+.print-table .text-right {
+    text-align: right;
+}
+
+.print-table .text-center {
+    text-align: center;
+}
+
+.print-sheet-footer {
+    margin-top: 3rem;
+}
+
+.signature-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.signature-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 42%;
+}
+
+.signature-line .line {
+    width: 100%;
+    border-bottom: 1px solid #111;
+    margin-bottom: 6px;
+    height: 1px;
+}
+
+.signature-line span {
+    font-size: 0.65rem;
+    color: #444;
+    font-weight: 600;
+}
+
+/* Modal Cierre Diario de Caja */
+.dark-modal {
+    background: #0f111a;
+    border-color: rgba(0, 210, 255, 0.15);
+}
+
+.closing-form-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.closing-form-panel label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.closing-form-panel input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #fff;
+    width: 100%;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.25s;
+}
+
+.closing-form-panel input:focus {
+    border-color: var(--cyan);
+}
+
+.closing-form-panel .input-prefix-wrapper {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.closing-form-panel .input-prefix {
+    position: absolute;
+    left: 12px;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.closing-form-panel input {
+    padding-left: 26px;
+}
+
+.input-help {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.closing-breakdown-container {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.2rem;
+}
+
+.closing-breakdown-container h4 {
+    font-family: var(--font-headline);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 6px;
+}
+
+.closing-breakdown-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.closing-breakdown-list li {
+    font-size: 0.8rem;
+    padding: 2px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.closing-breakdown-list li span {
+    color: var(--text-secondary);
+}
+
+.closing-breakdown-list li strong {
+    color: #fff;
+    font-family: monospace;
+}
+
+.closing-total-row {
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    padding-top: 10px;
+    margin-top: 6px;
+    font-size: 0.95rem !important;
+    font-weight: bold;
+}
+
+.closing-total-row span {
+    color: #fff !important;
+}
+
+.closing-total-row strong {
+    color: var(--emerald) !important;
+    font-size: 1.05rem;
+    text-shadow: 0 0 12px var(--emerald-glow);
+}
+
+/* Gráficos de barra acumulados del día en Slide 4 */
+.sales-report-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.sales-report-bars h4 {
+    font-family: var(--font-headline);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.bar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.bar-labels span:nth-child(2) {
+    font-family: monospace;
+}
+
+.bar-progress-container {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bar-fill.bg-purple {
+    background: linear-gradient(90deg, #9b51e0, #7326db);
+}
+
+.text-purple {
+    color: #c084fc !important;
+}
+
+/* Efecto glow animado para nuevas filas de inventario */
+@keyframes itemGlowHighlight {
+    0% {
+        box-shadow: 0 0 0 rgba(0, 255, 135, 0);
+        border-color: var(--border-color);
+    }
+    30% {
+        box-shadow: 0 0 15px rgba(0, 255, 135, 0.3);
+        border-color: var(--emerald);
+        background: rgba(0, 255, 135, 0.03);
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(0, 255, 135, 0);
+        border-color: var(--border-color);
+    }
+}
+
+.glow-new-item {
+    animation: itemGlowHighlight 2.5s ease-out;
+}
+
+/* Reglas de Impresión para Reporte Físico */
+@media print {
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        overflow: visible !important;
+    }
+    .slides-container, 
+    .main-header, 
+    .side-nav, 
+    .slides-navigation-controls, 
+    .ambient-glows, 
+    #particles-canvas,
+    .modal-header, 
+    .modal-footer,
+    #modal-cash-closing {
+        display: none !important;
+    }
+    .modal-overlay {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+        height: auto !important;
+        width: auto !important;
+        z-index: auto !important;
+    }
+    .modal-container.print-modal {
+        border: none !important;
+        box-shadow: none !important;
+        background: #fff !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .print-sheet {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+}
+

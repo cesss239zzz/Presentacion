@@ -204,62 +204,87 @@
                                 </div>
                             </div>
 
-                            <!-- Lógica de Facturación con RTN -->
-                            <div class="sim-fiscal-box">
-                                <div class="fiscal-toggle-row">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="rtn-toggle">
-                                        <span class="slider"></span>
-                                    </label>
-                                    <span class="toggle-label">¿Requiere Factura Legal con RTN?</span>
-                                </div>
-                                <div class="rtn-input-wrapper hidden" id="rtn-input-wrapper">
-                                    <input type="text" id="rtn-field" placeholder="Ingrese el RTN (Ej. 0801-1990-12345)" maxlength="16">
-                                    <div class="rtn-validation-status success-color" id="rtn-status-msg">
-                                        <span class="dot-small"></span>Cliente Validado en Sistema
-                                    </div>
-                                </div>
-                            </div>
+                             <!-- Lógica de Facturación y Comprobantes -->
+                             <div class="sim-options-box">
+                                 <div class="option-row">
+                                     <span class="option-label">Tipo de Comprobante</span>
+                                     <div class="segmented-control" id="doc-type-control">
+                                         <button type="button" class="segment-btn active" data-type="factura">Factura Legal</button>
+                                         <button type="button" class="segment-btn" data-type="orden">Orden de Entrega</button>
+                                     </div>
+                                 </div>
+                                 
+                                 <div class="option-row" id="pay-method-row">
+                                     <span class="option-label">Método de Pago</span>
+                                     <div class="segmented-control" id="pay-method-control">
+                                         <button type="button" class="segment-btn active" data-method="efectivo">Efectivo</button>
+                                         <button type="button" class="segment-btn" data-method="tarjeta">Tarjeta</button>
+                                         <button type="button" class="segment-btn" data-method="transferencia">Transferencia</button>
+                                     </div>
+                                 </div>
 
-                            <button class="btn btn-secondary w-full" id="btn-simular-venta" disabled>
-                                <span>Simular Cobro e Impresión</span>
-                            </button>
-                        </div>
-                        
-                        <!-- Simulación de Ticket Impreso que sale de la caja -->
-                        <div class="printed-ticket-wrap" id="printed-ticket-wrap">
-                            <div class="ticket-arrow"></div>
-                            <div class="printed-ticket" id="printed-ticket">
-                                <div class="ticket-header">
-                                    <h3>VK-SYSTEM RETAIL</h3>
-                                    <p>Tegucigalpa, Honduras</p>
-                                    <p>RTN: 0801-9021-394821</p>
-                                    <p class="ticket-divider">************************</p>
-                                </div>
-                                <div class="ticket-info">
-                                    <p>Fecha: <span id="ticket-date">26/06/2026</span></p>
-                                    <p>Factura #: 000-001-01-000492</p>
-                                    <p>Cliente: <strong id="ticket-client-name">CONSUMIDOR FINAL</strong></p>
-                                    <p id="ticket-client-rtn-row" class="hidden">RTN Cliente: <span id="ticket-client-rtn">N/D</span></p>
-                                    <p class="ticket-divider">------------------------</p>
-                                </div>
-                                <div class="ticket-items" id="ticket-items">
-                                    <!-- Dinámico -->
-                                </div>
-                                <div class="ticket-totals">
-                                    <p class="ticket-divider">------------------------</p>
-                                    <p class="flex-between"><span>SUBTOTAL:</span><span id="ticket-subtotal">L 0.00</span></p>
-                                    <p class="flex-between"><span>ISV (15%):</span><span id="ticket-tax">L 0.00</span></p>
-                                    <p class="flex-between font-bold"><span>TOTAL A PAGAR:</span><span id="ticket-total">L 0.00</span></p>
-                                    <p class="ticket-divider">************************</p>
-                                </div>
-                                <div class="ticket-footer">
-                                    <p>¡Gracias por su compra!</p>
-                                    <p>Soporte por VK-System POS</p>
-                                    <div class="barcode">|||| | ||||| || ||| | |||</div>
-                                </div>
-                            </div>
-                        </div>
+                                 <div class="sim-fiscal-box" id="pos-rtn-box">
+                                     <div class="fiscal-toggle-row">
+                                         <label class="toggle-switch">
+                                             <input type="checkbox" id="rtn-toggle">
+                                             <span class="slider"></span>
+                                         </label>
+                                         <span class="toggle-label">¿Factura Legal con RTN?</span>
+                                     </div>
+                                     <div class="rtn-input-wrapper hidden" id="rtn-input-wrapper">
+                                         <input type="text" id="rtn-field" placeholder="Ingrese el RTN (Ej. 0801-1990-12345)" maxlength="16">
+                                         <div class="rtn-validation-status success-color" id="rtn-status-msg">
+                                             <span class="dot-small"></span>Cliente Validado en Sistema
+                                         </div>
+                                     </div>
+                                 </div>
+
+                                 <div class="sim-info-box hidden" id="pos-order-info">
+                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="margin-right: 4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                     <span>Genera recibo para control interno y despacho físico en bodega.</span>
+                                 </div>
+                             </div>
+
+                             <button class="btn btn-secondary w-full" id="btn-simular-venta" disabled>
+                                 <span>Simular Cobro e Impresión</span>
+                             </button>
+                         </div>
+                         
+                         <!-- Simulación de Ticket Impreso que sale de la caja -->
+                         <div class="printed-ticket-wrap" id="printed-ticket-wrap">
+                             <div class="ticket-arrow"></div>
+                             <div class="printed-ticket" id="printed-ticket">
+                                 <div class="ticket-header" id="ticket-header-area">
+                                     <h3 id="ticket-main-title">VK-SYSTEM RETAIL</h3>
+                                     <p>Tegucigalpa, Honduras</p>
+                                     <p id="ticket-establishment-rtn">RTN: 0801-9021-394821</p>
+                                     <p class="ticket-divider">************************</p>
+                                 </div>
+                                 <div class="ticket-info">
+                                     <p>Fecha: <span id="ticket-date">26/06/2026</span></p>
+                                     <p id="ticket-doc-id-row">Factura #: 000-001-01-000492</p>
+                                     <p>Cliente: <strong id="ticket-client-name">CONSUMIDOR FINAL</strong></p>
+                                     <p id="ticket-client-rtn-row" class="hidden">RTN Cliente: <span id="ticket-client-rtn">N/D</span></p>
+                                     <p id="ticket-pay-method-row">Pago: <span id="ticket-pay-method-val">Efectivo</span></p>
+                                     <p class="ticket-divider">------------------------</p>
+                                 </div>
+                                 <div class="ticket-items" id="ticket-items">
+                                     <!-- Dinámico -->
+                                 </div>
+                                 <div class="ticket-totals">
+                                     <p class="ticket-divider">------------------------</p>
+                                     <p class="flex-between" id="ticket-subtotal-row"><span>SUBTOTAL:</span><span id="ticket-subtotal">L 0.00</span></p>
+                                     <p class="flex-between" id="ticket-tax-row"><span>ISV (15%):</span><span id="ticket-tax">L 0.00</span></p>
+                                     <p class="flex-between font-bold" id="ticket-total-row"><span>TOTAL A PAGAR:</span><span id="ticket-total">L 0.00</span></p>
+                                     <p class="ticket-divider">************************</p>
+                                 </div>
+                                 <div class="ticket-footer">
+                                     <p id="ticket-footer-text">¡Gracias por su compra!</p>
+                                     <p>Soporte por VK-System POS</p>
+                                     <div class="barcode">|||| | ||||| || ||| | |||</div>
+                                 </div>
+                             </div>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -286,6 +311,36 @@
                     <p class="inventory-footer-text">
                         <strong>"Stock real, sin fugas ni sorpresas."</strong> Cada movimiento se registra con fecha, hora y usuario responsable.
                     </p>
+                    
+                    <!-- Simulador de Registro de Producto (Módulo Nuevo) -->
+                    <div class="product-register-card">
+                        <div class="register-header">
+                            <span class="sim-badge bg-emerald">Módulo Administrativo</span>
+                            <h4>Registrar Nuevo Artículo</h4>
+                        </div>
+                        <form id="product-register-form">
+                            <div class="form-group">
+                                <label for="prod-name">Nombre del Producto</label>
+                                <input type="text" id="prod-name" required placeholder="Ej. Queso Crema (Libra)">
+                            </div>
+                            <div class="form-row grid-2-col">
+                                <div class="form-group">
+                                    <label for="prod-price">Precio de Venta</label>
+                                    <div class="input-prefix-wrapper">
+                                        <span class="input-prefix">L</span>
+                                        <input type="number" id="prod-price" required min="0.01" step="0.01" placeholder="0.00">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prod-stock">Stock Inicial</label>
+                                    <input type="number" id="prod-stock" required min="0" placeholder="0">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full" id="btn-save-product">
+                                <span>Guardar Producto</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="visual-side reveal-item delay-1">
@@ -343,6 +398,13 @@
                                 </div>
                             </div>
 
+                            <div class="inventory-actions" style="margin-bottom: 1.2rem;">
+                                <button class="btn btn-secondary w-full" id="btn-print-inventory">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                    <span>Imprimir Reporte (Control Físico)</span>
+                                </button>
+                            </div>
+
                             <!-- Bitácora de Auditoría en Tiempo Real -->
                             <div class="inventory-log-container">
                                 <h4>Registro Reciente de Movimientos</h4>
@@ -390,61 +452,79 @@
                     <!-- Módulo de Auditoría Financiera -->
                     <div class="interactive-card audit-widget">
                         <div class="simulator-header">
-                            <span class="sim-badge bg-cyan">Panel Administrativo</span>
-                            <h3>Corte de Turno en Vivo</h3>
+                            <span class="sim-badge bg-cyan">Panel de Reportes</span>
+                            <h3>Cierre y Ventas del Día</h3>
                         </div>
                         <div class="simulator-body">
-                            <!-- Gráfico de Ventas por Método de Pago -->
-                            <div class="audit-split-viz">
-                                <div class="split-bar-container">
-                                    <div class="split-labels">
-                                        <span>Efectivo (60%)</span>
-                                        <span>Tarjeta (40%)</span>
+                            <!-- Reporte de Ventas con Barras de Progreso -->
+                            <div class="sales-report-bars">
+                                <h4>Distribución de Ventas</h4>
+                                
+                                <div class="bar-item">
+                                    <div class="bar-labels">
+                                        <span>Efectivo</span>
+                                        <span id="lbl-bar-cash">L 7,470.00 (60%)</span>
                                     </div>
-                                    <div class="split-progress-bar">
-                                        <div class="split-progress bg-emerald" style="width: 60%" id="audit-cash-bar"></div>
-                                        <div class="split-progress bg-cyan" style="width: 40%" id="audit-card-bar"></div>
+                                    <div class="bar-progress-container">
+                                        <div class="bar-fill bg-emerald" id="bar-fill-cash" style="width: 60%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bar-item">
+                                    <div class="bar-labels">
+                                        <span>Tarjeta</span>
+                                        <span id="lbl-bar-card">L 4,980.00 (40%)</span>
+                                    </div>
+                                    <div class="bar-progress-container">
+                                        <div class="bar-fill bg-cyan" id="bar-fill-card" style="width: 40%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bar-item">
+                                    <div class="bar-labels">
+                                        <span>Transferencia</span>
+                                        <span id="lbl-bar-transfer">L 0.00 (0%)</span>
+                                    </div>
+                                    <div class="bar-progress-container">
+                                        <div class="bar-fill bg-purple" id="bar-fill-transfer" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bar-item">
+                                    <div class="bar-labels">
+                                        <span>Notas de Entrega</span>
+                                        <span id="lbl-bar-delivery">L 0.00 (0%)</span>
+                                    </div>
+                                    <div class="bar-progress-container">
+                                        <div class="bar-fill bg-orange" id="bar-fill-delivery" style="width: 0%"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="audit-stats-grid">
-                                <div class="audit-stat">
-                                    <span>Efectivo Declarado</span>
-                                    <strong class="text-white" id="audit-cash-text">L 7,800.00</strong>
-                                </div>
-                                <div class="audit-stat">
-                                    <span>Tarjeta Declarado</span>
-                                    <strong class="text-white" id="audit-card-text">L 5,200.00</strong>
-                                </div>
+                            <div class="audit-stats-grid" style="margin-top: 1.2rem;">
                                 <div class="audit-stat full-width highlight-stat">
-                                    <span>Venta Neta Total</span>
-                                    <strong class="text-emerald" id="audit-total-text">L 13,000.00</strong>
+                                    <span>Venta Neta Acumulada</span>
+                                    <strong class="text-emerald" id="report-sales-total">L 12,450.00</strong>
                                 </div>
                             </div>
 
                             <div class="audit-action-box">
-                                <button class="btn btn-primary w-full" id="btn-run-audit">
-                                    <span>Generar Corte de Caja Z</span>
+                                <button class="btn btn-primary w-full" id="btn-run-closing-modal">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+                                    <span>Generar Cierre Diario de Caja</span>
                                 </button>
                             </div>
 
-                            <!-- Reporte de auditoría generado en tiempo real -->
-                            <div class="audit-report-output hidden" id="audit-report-output">
+                            <!-- Ticket del Cierre Diario Generado (Recibo de Caja Z) -->
+                            <div class="audit-report-output hidden" id="closing-report-output">
                                 <div class="report-header">
-                                    <h4>*** CORTE DE CAJA Z COMPLETO ***</h4>
-                                    <p id="report-timestamp">Fecha: 26/06/2026 18:30:00</p>
+                                    <h4>*** VK-SYSTEM: REPORTE DE CIERRE Z ***</h4>
+                                    <p id="closing-report-timestamp">Fecha: --/--/---- --:--:--</p>
                                 </div>
-                                <ul class="report-details">
-                                    <li class="flex-between"><span>Transacciones Realizadas:</span><strong>24 Ventas</strong></li>
-                                    <li class="flex-between"><span>Subtotal Neto:</span><strong>L 11,304.35</strong></li>
-                                    <li class="flex-between"><span>Impuesto ISV 15%:</span><strong>L 1,695.65</strong></li>
-                                    <li class="flex-between"><span>Fondo de Caja Inicial:</span><strong>L 1,000.00</strong></li>
-                                    <li class="flex-between font-bold border-top"><span>Efectivo Esperado:</span><strong>L 8,800.00</strong></li>
-                                    <li class="flex-between font-bold"><span>Venta Tarjeta Registrada:</span><strong>L 5,200.00</strong></li>
-                                    <li class="flex-between font-bold border-top text-emerald"><span>Cuadre de Caja:</span><strong>DIFERENCIA L 0.00 (OK)</strong></li>
+                                <ul class="report-details" id="closing-report-details">
+                                    <!-- Rellenado dinámicamente al confirmar -->
                                 </ul>
-                                <div class="report-stamp">VK-System - Reporte Firmado Digitalmente</div>
+                                <div class="report-stamp">VK-System - Cierre Firmado Digitalmente y Guardado</div>
                             </div>
                         </div>
                     </div>
@@ -522,6 +602,117 @@
         </section>
 
     </main>
+
+    <!-- MODAL: REPORTE DE INVENTARIO PARA CONTROL FÍSICO -->
+    <div class="modal-overlay hidden" id="modal-inventory-report">
+        <div class="modal-container print-modal">
+            <div class="modal-header">
+                <h3>Vista Previa de Impresión: Reporte de Control Físico</h3>
+                <button class="btn-close-modal" id="btn-close-inventory-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="print-sheet" id="print-sheet-content">
+                    <div class="print-sheet-header">
+                        <h2>VK-SYSTEM - REPORTE DE CONTROL FÍSICO DE INVENTARIO</h2>
+                        <p>Fecha de Generación: <span id="print-date">--/--/----</span> | Generado por: Auditor General</p>
+                        <p class="print-instruction">Instrucción: Utilice esta hoja para comparar las existencias registradas en el sistema contra el conteo físico en los estantes.</p>
+                    </div>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre del Producto</th>
+                                <th class="text-right">Stock Sistema</th>
+                                <th class="text-center">Stock Físico (Conteo)</th>
+                                <th class="text-center">Diferencia</th>
+                                <th>Firma Auditor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="print-table-body">
+                            <!-- Dinámico -->
+                        </tbody>
+                    </table>
+                    <div class="print-sheet-footer">
+                        <div class="signature-row">
+                            <div class="signature-line">
+                                <div class="line"></div>
+                                <span>Firma Responsable Bodega</span>
+                            </div>
+                            <div class="signature-line">
+                                <div class="line"></div>
+                                <span>Firma Auditor / Supervisor</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-cancel-print">Cerrar</button>
+                <button class="btn btn-primary" id="btn-execute-print">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Simular Impresión</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CIERRE DIARIO DE CAJA -->
+    <div class="modal-overlay hidden" id="modal-cash-closing">
+        <div class="modal-container dark-modal">
+            <div class="modal-header">
+                <h3>Cierre Diario de Caja (Corte Z)</h3>
+                <button class="btn-close-modal" id="btn-close-closing-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="closing-form-panel">
+                    <div class="form-group">
+                        <label for="closing-initial-cash">Monto Inicial de Caja (Fondo)</label>
+                        <div class="input-prefix-wrapper">
+                            <span class="input-prefix">L</span>
+                            <input type="number" id="closing-initial-cash" value="1000.00" min="0" step="0.01">
+                        </div>
+                        <p class="input-help">Ingrese el efectivo inicial con el que se abrió caja.</p>
+                    </div>
+                </div>
+                
+                <div class="closing-breakdown-container">
+                    <h4>Desglose de Ventas del Turno</h4>
+                    <ul class="closing-breakdown-list">
+                        <li class="flex-between">
+                            <span>💵 Fondo de Caja Inicial:</span>
+                            <strong id="closing-lbl-initial">L 1,000.00</strong>
+                        </li>
+                        <li class="flex-between text-cyan">
+                            <span>💸 Ventas en Efectivo:</span>
+                            <strong id="closing-lbl-cash">L 0.00</strong>
+                        </li>
+                        <li class="flex-between text-emerald">
+                            <span>💳 Ventas por Tarjeta:</span>
+                            <strong id="closing-lbl-card">L 0.00</strong>
+                        </li>
+                        <li class="flex-between text-purple">
+                            <span>🏦 Ventas por Transferencia:</span>
+                            <strong id="closing-lbl-transfer">L 0.00</strong>
+                        </li>
+                        <li class="flex-between text-orange">
+                            <span>📝 Notas / Órdenes de Entrega:</span>
+                            <strong id="closing-lbl-delivery">L 0.00</strong>
+                        </li>
+                        <li class="flex-between font-bold closing-total-row">
+                            <span>💰 TOTAL FINAL EN CAJA:</span>
+                            <strong id="closing-lbl-grand-total">L 1,000.00</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-cancel-closing">Cancelar</button>
+                <button class="btn btn-primary" id="btn-execute-closing">
+                    <span>Confirmar y Firmar Cierre</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Botones de Navegación Física (Adelante/Atrás) -->
     <div class="slides-navigation-controls">

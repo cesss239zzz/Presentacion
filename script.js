@@ -225,6 +225,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. DIAPOSITIVA 2: SIMULADOR DE PUNTO DE VENTA (POS)
     // ==========================================================================
     let cart = [];
+    let selectedDocType = "factura"; // factura | orden
+    let selectedPayMethod = "efectivo"; // efectivo | tarjeta | transferencia
+    let deliveryOrderCounter = 1;
+
+    // Totales financieros acumulados del día para cierre
+    let salesCash = 7470.00;
+    let salesCard = 4980.00;
+    let salesTransfer = 0.00;
+    let salesDelivery = 0.00;
+
     const posCartList = document.getElementById("pos-cart-list");
     const posSubtotal = document.getElementById("pos-subtotal");
     const btnSimularVenta = document.getElementById("btn-simular-venta");
@@ -234,14 +244,61 @@ document.addEventListener("DOMContentLoaded", () => {
     const ticketWrap = document.getElementById("printed-ticket-wrap");
     
     // Detalle de ticket impreso
+    const ticketMainTitle = document.getElementById("ticket-main-title");
+    const ticketEstablishmentRtn = document.getElementById("ticket-establishment-rtn");
     const ticketClientName = document.getElementById("ticket-client-name");
     const ticketClientRtnRow = document.getElementById("ticket-client-rtn-row");
     const ticketClientRtn = document.getElementById("ticket-client-rtn");
+    const ticketPayMethodRow = document.getElementById("ticket-pay-method-row");
+    const ticketPayMethodVal = document.getElementById("ticket-pay-method-val");
+    const ticketDocIdRow = document.getElementById("ticket-doc-id-row");
     const ticketItems = document.getElementById("ticket-items");
+    const ticketSubtotalRow = document.getElementById("ticket-subtotal-row");
+    const ticketTaxRow = document.getElementById("ticket-tax-row");
     const ticketSubtotal = document.getElementById("ticket-subtotal");
     const ticketTax = document.getElementById("ticket-tax");
     const ticketTotal = document.getElementById("ticket-total");
     const ticketDate = document.getElementById("ticket-date");
+    const ticketFooterText = document.getElementById("ticket-footer-text");
+
+    // Selectores de tipo de documento y método de pago
+    const docTypeBtns = document.querySelectorAll("#doc-type-control .segment-btn");
+    const payMethodBtns = document.querySelectorAll("#pay-method-control .segment-btn");
+    const payMethodRow = document.getElementById("pay-method-row");
+    const posRtnBox = document.getElementById("pos-rtn-box");
+    const posOrderInfo = document.getElementById("pos-order-info");
+
+    if (docTypeBtns) {
+        docTypeBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                docTypeBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                selectedDocType = btn.getAttribute("data-type");
+                
+                if (selectedDocType === "orden") {
+                    if (payMethodRow) payMethodRow.classList.add("hidden");
+                    if (posRtnBox) posRtnBox.classList.add("hidden");
+                    if (posOrderInfo) posOrderInfo.classList.remove("hidden");
+                } else {
+                    if (payMethodRow) payMethodRow.classList.remove("hidden");
+                    if (posRtnBox) posRtnBox.classList.remove("hidden");
+                    if (posOrderInfo) posOrderInfo.classList.add("hidden");
+                }
+                if (ticketWrap) ticketWrap.classList.remove("active");
+            });
+        });
+    }
+
+    if (payMethodBtns) {
+        payMethodBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                payMethodBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                selectedPayMethod = btn.getAttribute("data-method");
+                if (ticketWrap) ticketWrap.classList.remove("active");
+            });
+        });
+    }
 
     // Evento al añadir productos
     const productButtons = document.querySelectorAll(".btn-product-add");
@@ -259,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
             // Ocultar ticket previo si estaba abierto para obligar a nueva simulación
-            ticketWrap.classList.remove("active");
+            if (ticketWrap) ticketWrap.classList.remove("active");
             
             updateCartUI();
         });
@@ -302,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.addEventListener("click", (e) => {
                 const idx = parseInt(btn.getAttribute("data-index"));
                 cart.splice(idx, 1);
-                ticketWrap.classList.remove("active");
+                if (ticketWrap) ticketWrap.classList.remove("active");
                 updateCartUI();
             });
         });
@@ -318,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 rtnInputWrapper.classList.add("hidden");
                 rtnField.value = "";
             }
-            ticketWrap.classList.remove("active");
+            if (ticketWrap) ticketWrap.classList.remove("active");
         });
     }
 
@@ -332,23 +389,75 @@ document.addEventListener("DOMContentLoaded", () => {
             const dateStr = now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             ticketDate.textContent = dateStr;
 
-            // 2. Establecer nombre y RTN del cliente
-            if (rtnToggle.checked && rtnField.value.trim() !== "") {
-                ticketClientName.textContent = "CLIENTE REGISTRADO LEGAL";
-                ticketClientRtn.textContent = rtnField.value;
-                ticketClientRtnRow.classList.remove("hidden");
+            let saleTotal = 0;
+            cart.forEach(item => {
+                saleTotal += item.price * item.qty;
+            });
+
+            // 2. Ajustar formato según Tipo de Documento
+            if (selectedDocType === "factura") {
+                ticketMainTitle.textContent = "VK-SYSTEM RETAIL";
+                if (ticketEstablishmentRtn) ticketEstablishmentRtn.classList.remove("hidden");
+                ticketDocIdRow.textContent = "Factura #: 000-001-01-000" + Math.floor(Math.random() * 900 + 100);
+                
+                if (rtnToggle && rtnToggle.checked && rtnField.value.trim() !== "") {
+                    ticketClientName.textContent = "CLIENTE REGISTRADO LEGAL";
+                    ticketClientRtn.textContent = rtnField.value;
+                    ticketClientRtnRow.classList.remove("hidden");
+                } else {
+                    ticketClientName.textContent = "CONSUMIDOR FINAL";
+                    ticketClientRtnRow.classList.add("hidden");
+                }
+                
+                // Mostrar método de pago
+                if (ticketPayMethodRow) ticketPayMethodRow.classList.remove("hidden");
+                let payMethodName = "Efectivo";
+                if (selectedPayMethod === "tarjeta") payMethodName = "Tarjeta de Crédito";
+                if (selectedPayMethod === "transferencia") payMethodName = "Transferencia Bancaria";
+                ticketPayMethodVal.textContent = payMethodName;
+                
+                // Mostrar desgloses de impuestos
+                if (ticketSubtotalRow) ticketSubtotalRow.classList.remove("hidden");
+                if (ticketTaxRow) ticketTaxRow.classList.remove("hidden");
+                
+                const subtotalSinIsv = saleTotal / 1.15;
+                const isvCalculado = saleTotal - subtotalSinIsv;
+                ticketSubtotal.textContent = `L ${subtotalSinIsv.toFixed(2)}`;
+                ticketTax.textContent = `L ${isvCalculado.toFixed(2)}`;
+                ticketFooterText.textContent = "¡Gracias por su compra!";
+
+                // Acumular ventas en categoría correspondiente
+                if (selectedPayMethod === "efectivo") salesCash += saleTotal;
+                else if (selectedPayMethod === "tarjeta") salesCard += saleTotal;
+                else if (selectedPayMethod === "transferencia") salesTransfer += saleTotal;
+
             } else {
-                ticketClientName.textContent = "CONSUMIDOR FINAL";
+                // ORDEN DE ENTREGA
+                ticketMainTitle.textContent = "ORDEN DE ENTREGA";
+                if (ticketEstablishmentRtn) ticketEstablishmentRtn.classList.add("hidden");
+                ticketDocIdRow.innerHTML = `Número de Entrega: <strong style="font-size:0.8rem;color:#000;">#${String(deliveryOrderCounter).padStart(4, '0')}</strong>`;
+                
+                ticketClientName.textContent = "CONTROL INTERNO - BODEGA";
                 ticketClientRtnRow.classList.add("hidden");
+                
+                // Pago: Interno
+                if (ticketPayMethodRow) ticketPayMethodRow.classList.remove("hidden");
+                ticketPayMethodVal.textContent = "Nota de Entrega (Pendiente)";
+                
+                // Ocultar subtotal/ISV desglosados para orden de despacho limpio
+                if (ticketSubtotalRow) ticketSubtotalRow.classList.add("hidden");
+                if (ticketTaxRow) ticketTaxRow.classList.add("hidden");
+                ticketFooterText.textContent = "APTO PARA DESPACHO EN BODEGA";
+
+                // Acumular a notas de entrega
+                salesDelivery += saleTotal;
+                deliveryOrderCounter++;
             }
 
             // 3. Rellenar productos en ticket
             ticketItems.innerHTML = "";
-            let subtotal = 0;
             cart.forEach(item => {
                 const totalItem = item.price * item.qty;
-                subtotal += totalItem;
-                
                 const itemDiv = document.createElement("div");
                 itemDiv.className = "flex-between";
                 itemDiv.innerHTML = `
@@ -358,23 +467,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 ticketItems.appendChild(itemDiv);
             });
 
-            // 4. Calcular impuestos (ISV 15%)
-            // Asumimos ISV ya incluido en el precio, desglosándolo
-            const subtotalSinIsv = subtotal / 1.15;
-            const isvCalculado = subtotal - subtotalSinIsv;
+            ticketTotal.textContent = `L ${saleTotal.toFixed(2)}`;
 
-            ticketSubtotal.textContent = `L ${subtotalSinIsv.toFixed(2)}`;
-            ticketTax.textContent = `L ${isvCalculado.toFixed(2)}`;
-            ticketTotal.textContent = `L ${subtotal.toFixed(2)}`;
+            // 4. Animación de salida del ticket
+            if (ticketWrap) ticketWrap.classList.add("active");
 
-            // 5. Animación de salida del ticket
-            ticketWrap.classList.add("active");
-
-            // Opcional: Actualizar el acumulado total del día en el dashboard del hero
-            currentLiveSales += subtotal;
+            // 5. Actualizar el acumulado total del día en el hero
+            currentLiveSales += saleTotal;
             if (liveSalesVal) {
                 liveSalesVal.textContent = `L ${currentLiveSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }
+
+            // 6. Actualizar panel de reportes de cierre de caja en vivo
+            updateClosingDashboard();
 
             // Limpiar el carrito para la próxima venta con un retraso estético
             setTimeout(() => {
@@ -397,12 +502,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const invLogList = document.getElementById("inv-log-list");
     const stockAdjustButtons = document.querySelectorAll(".btn-stock-adjust");
 
-    stockAdjustButtons.forEach(btn => {
+    // Configurar controladores de eventos para los botones de cargo/merma
+    function setupStockAdjustBtn(btn) {
         btn.addEventListener("click", () => {
             const pid = btn.getAttribute("data-id");
             const op = btn.getAttribute("data-op");
             const item = stockData[pid];
             const rowElement = btn.closest(".stock-item-row");
+            if (!item || !rowElement) return;
             
             let change = 0;
             
@@ -437,11 +544,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 qtyTextNode.innerHTML = `<strong class="qty-val">${item.qty}</strong> Unidades`;
                 
                 // Color normal
-                if (pid === "p1") progressBar.className = "stock-bar bg-emerald";
-                if (pid === "p3") progressBar.className = "stock-bar bg-cyan";
+                if (pid.startsWith("p1")) progressBar.className = "stock-bar bg-emerald";
+                else if (pid.startsWith("p3")) progressBar.className = "stock-bar bg-cyan";
+                else progressBar.className = "stock-bar bg-cyan";
             }
         });
-    });
+    }
+
+    // Inicializar botones preexistentes de inventario
+    stockAdjustButtons.forEach(btn => setupStockAdjustBtn(btn));
 
     function addInventoryLog(productName, actionText, type) {
         if (!invLogList) return;
@@ -469,61 +580,303 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // REGISTRO DE NUEVOS PRODUCTOS DINÁMICOS
+    const productRegisterForm = document.getElementById("product-register-form");
+    if (productRegisterForm) {
+        productRegisterForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            const prodNameField = document.getElementById("prod-name");
+            const prodPriceField = document.getElementById("prod-price");
+            const prodStockField = document.getElementById("prod-stock");
+            
+            if (!prodNameField || !prodPriceField || !prodStockField) return;
+            
+            const name = prodNameField.value.trim();
+            const price = parseFloat(prodPriceField.value);
+            const stock = parseInt(prodStockField.value);
+            
+            if (!name || isNaN(price) || isNaN(stock)) return;
+            
+            // Generar nuevo ID único
+            const newPid = "p" + (Object.keys(stockData).length + 1);
+            
+            // Añadir al mapa de datos
+            stockData[newPid] = {
+                name: name,
+                qty: stock,
+                max: Math.round(stock * 1.5) || 100,
+                min: Math.round(stock * 0.15) || 5
+            };
+            
+            // 1. Agregar visualmente al catálogo de inventario (Slide 3)
+            const stockList = document.querySelector(".stock-list");
+            if (stockList) {
+                const newRow = document.createElement("div");
+                newRow.className = "stock-item-row glow-new-item";
+                newRow.setAttribute("data-id", newPid);
+                
+                const item = stockData[newPid];
+                const pct = (item.qty / item.max) * 100;
+                const isCritical = item.qty <= item.min;
+                
+                if (isCritical) newRow.classList.add("alert-stock");
+                
+                newRow.innerHTML = `
+                    <div class="stock-item-info">
+                        <span class="stock-item-name">${item.name}</span>
+                        <span class="stock-item-qty"><strong class="qty-val">${item.qty}</strong> Unidades${isCritical ? ' (Crítico)' : ''}</span>
+                    </div>
+                    <div class="stock-bar-wrapper">
+                        <div class="stock-bar bg-cyan" style="width: ${pct}%"></div>
+                    </div>
+                    <div class="stock-item-actions">
+                        <button class="btn-stock-adjust plus" data-id="${newPid}" data-op="add">+ Cargo</button>
+                        <button class="btn-stock-adjust minus" data-id="${newPid}" data-op="sub">- Merma</button>
+                    </div>
+                `;
+                
+                stockList.appendChild(newRow);
+                
+                // Enlazar eventos de los nuevos botones
+                newRow.querySelectorAll(".btn-stock-adjust").forEach(btn => setupStockAdjustBtn(btn));
+                
+                // Registrar en la bitácora
+                addInventoryLog(name, `Art. creado con stock inicial: ${stock}`, "positive");
+            }
+            
+            // 2. Agregar visualmente como opción de compra al Punto de Venta (Slide 2)
+            const productsShelf = document.querySelector(".sim-products-shelf");
+            if (productsShelf) {
+                const newProductBtn = document.createElement("button");
+                newProductBtn.className = "btn-product-add";
+                newProductBtn.setAttribute("data-name", name);
+                newProductBtn.setAttribute("data-price", price.toFixed(2));
+                newProductBtn.innerHTML = `
+                    <span>${name}</span>
+                    <strong>L ${price.toFixed(2)}</strong>
+                `;
+                
+                productsShelf.appendChild(newProductBtn);
+                
+                // Enlazar evento para añadir al carrito
+                newProductBtn.addEventListener("click", () => {
+                    // Buscar si ya existe en el carrito
+                    const existingItem = cart.find(item => item.name === name);
+                    if (existingItem) {
+                        existingItem.qty += 1;
+                    } else {
+                        cart.push({ name, price, qty: 1 });
+                    }
+                    if (ticketWrap) ticketWrap.classList.remove("active");
+                    updateCartUI();
+                });
+            }
+            
+            // Resetear el formulario
+            productRegisterForm.reset();
+            
+            // Animación feedback temporal en el botón
+            const saveBtn = document.getElementById("btn-save-product");
+            if (saveBtn) {
+                const origText = saveBtn.innerHTML;
+                saveBtn.innerHTML = "<span>✓ ¡Registrado!</span>";
+                saveBtn.style.background = "var(--emerald)";
+                saveBtn.style.boxShadow = "0 0 15px var(--emerald-glow)";
+                setTimeout(() => {
+                    saveBtn.innerHTML = origText;
+                    saveBtn.style.background = "";
+                    saveBtn.style.boxShadow = "";
+                }, 1500);
+            }
+        });
+    }
+
+    // MODAL IMPRESIÓN REPORTE INVENTARIO (CONTROL FÍSICO)
+    const btnPrintInventory = document.getElementById("btn-print-inventory");
+    const modalInventoryReport = document.getElementById("modal-inventory-report");
+    const btnCloseInventoryModal = document.getElementById("btn-close-inventory-modal");
+    const btnCancelPrint = document.getElementById("btn-cancel-print");
+    const btnExecutePrint = document.getElementById("btn-execute-print");
+    const printTableBody = document.getElementById("print-table-body");
+    const printDate = document.getElementById("print-date");
+
+    if (btnPrintInventory && modalInventoryReport) {
+        btnPrintInventory.addEventListener("click", () => {
+            // Establecer fecha
+            if (printDate) printDate.textContent = new Date().toLocaleDateString();
+            
+            // Generar tabla limpia
+            if (printTableBody) {
+                printTableBody.innerHTML = "";
+                let index = 1;
+                for (const key in stockData) {
+                    const item = stockData[key];
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>VK-${1000 + index}</td>
+                        <td style="font-weight: bold;">${item.name}</td>
+                        <td class="text-right" style="font-family: monospace;">${item.qty} Unidades</td>
+                        <td class="text-center" style="width: 100px;"><span style="display:inline-block; width: 60px; height: 16px; border: 1px solid #999; vertical-align: middle;"></span></td>
+                        <td class="text-center" style="width: 100px;"><span style="display:inline-block; width: 60px; height: 16px; border: 1px solid #999; vertical-align: middle;"></span></td>
+                        <td style="color: #666; font-size: 0.65rem;">Sist. OK</td>
+                    `;
+                    printTableBody.appendChild(tr);
+                    index++;
+                }
+            }
+            
+            modalInventoryReport.classList.remove("hidden");
+        });
+    }
+
+    // Controladores de cierre del modal de reporte
+    [btnCloseInventoryModal, btnCancelPrint].forEach(btn => {
+        if (btn) {
+            btn.addEventListener("click", () => {
+                if (modalInventoryReport) modalInventoryReport.classList.add("hidden");
+            });
+        }
+    });
+
+    if (btnExecutePrint) {
+        btnExecutePrint.addEventListener("click", () => {
+            window.print();
+        });
+    }
+
 
     // ==========================================================================
-    // 6. DIAPOSITIVA 4: CORTES Y AUDITORÍAS
+    // 6. DIAPOSITIVA 4: CIERRE DIARIO DE CAJA Y REPORTES
     // ==========================================================================
-    const btnRunAudit = document.getElementById("btn-run-audit");
-    const auditReportOutput = document.getElementById("audit-report-output");
-    const reportTimestamp = document.getElementById("report-timestamp");
-    const auditCashBar = document.getElementById("audit-cash-bar");
-    const auditCardBar = document.getElementById("audit-card-bar");
-    const auditCashText = document.getElementById("audit-cash-text");
-    const auditCardText = document.getElementById("audit-card-text");
-    const auditTotalText = document.getElementById("audit-total-text");
+    const btnRunClosingModal = document.getElementById("btn-run-closing-modal");
+    const modalCashClosing = document.getElementById("modal-cash-closing");
+    const btnCloseClosingModal = document.getElementById("btn-close-closing-modal");
+    const btnCancelClosing = document.getElementById("btn-cancel-closing");
+    const btnExecuteClosing = document.getElementById("btn-execute-closing");
+    const closingInitialCashInput = document.getElementById("closing-initial-cash");
+    const closingReportOutput = document.getElementById("closing-report-output");
+    
+    // Elementos del desglose del modal
+    const closingLblInitial = document.getElementById("closing-lbl-initial");
+    const closingLblCash = document.getElementById("closing-lbl-cash");
+    const closingLblCard = document.getElementById("closing-lbl-card");
+    const closingLblTransfer = document.getElementById("closing-lbl-transfer");
+    const closingLblDelivery = document.getElementById("closing-lbl-delivery");
+    const closingLblGrandTotal = document.getElementById("closing-lbl-grand-total");
 
-    if (btnRunAudit) {
-        btnRunAudit.addEventListener("click", () => {
-            // Actualizar datos del reporte en vivo basados en la venta total actual del hero
-            // Simular corte
+    let transactionCount = 24; // Transacciones iniciales ficticias del día
+
+    // Función global para actualizar el Dashboard de Cierre en Slide 4
+    function updateClosingDashboard() {
+        const totalVentas = salesCash + salesCard + salesTransfer + salesDelivery;
+        
+        // Actualizar total neto en la tarjeta del Slide 4
+        const reportSalesTotal = document.getElementById("report-sales-total");
+        if (reportSalesTotal) {
+            reportSalesTotal.textContent = `L ${totalVentas.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+        
+        // Calcular porcentajes
+        const pctCash = totalVentas > 0 ? (salesCash / totalVentas) * 100 : 0;
+        const pctCard = totalVentas > 0 ? (salesCard / totalVentas) * 100 : 0;
+        const pctTransfer = totalVentas > 0 ? (salesTransfer / totalVentas) * 100 : 0;
+        const pctDelivery = totalVentas > 0 ? (salesDelivery / totalVentas) * 100 : 0;
+        
+        // Actualizar etiquetas en barra de progreso
+        const lblCash = document.getElementById("lbl-bar-cash");
+        const lblCard = document.getElementById("lbl-bar-card");
+        const lblTransfer = document.getElementById("lbl-bar-transfer");
+        const lblDelivery = document.getElementById("lbl-bar-delivery");
+        
+        if (lblCash) lblCash.textContent = `L ${salesCash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${pctCash.toFixed(0)}%)`;
+        if (lblCard) lblCard.textContent = `L ${salesCard.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${pctCard.toFixed(0)}%)`;
+        if (lblTransfer) lblTransfer.textContent = `L ${salesTransfer.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${pctTransfer.toFixed(0)}%)`;
+        if (lblDelivery) lblDelivery.textContent = `L ${salesDelivery.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${pctDelivery.toFixed(0)}%)`;
+        
+        // Actualizar anchos de barra
+        const fillCash = document.getElementById("bar-fill-cash");
+        const fillCard = document.getElementById("bar-fill-card");
+        const fillTransfer = document.getElementById("bar-fill-transfer");
+        const fillDelivery = document.getElementById("bar-fill-delivery");
+        
+        if (fillCash) fillCash.style.width = `${pctCash}%`;
+        if (fillCard) fillCard.style.width = `${pctCard}%`;
+        if (fillTransfer) fillTransfer.style.width = `${pctTransfer}%`;
+        if (fillDelivery) fillDelivery.style.width = `${pctDelivery}%`;
+    }
+
+    // Función para calcular y renderizar el desglose financiero del cierre
+    function calculateClosingBreakdown() {
+        const initialCash = parseFloat(closingInitialCashInput.value) || 0;
+        const totalClosingAmount = initialCash + salesCash + salesCard + salesTransfer + salesDelivery;
+        
+        if (closingLblInitial) closingLblInitial.textContent = `L ${initialCash.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+        if (closingLblCash) closingLblCash.textContent = `L ${salesCash.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+        if (closingLblCard) closingLblCard.textContent = `L ${salesCard.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+        if (closingLblTransfer) closingLblTransfer.textContent = `L ${salesTransfer.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+        if (closingLblDelivery) closingLblDelivery.textContent = `L ${salesDelivery.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+        if (closingLblGrandTotal) closingLblGrandTotal.textContent = `L ${totalClosingAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    }
+
+    // Escuchar apertura de modal de cierre
+    if (btnRunClosingModal && modalCashClosing) {
+        btnRunClosingModal.addEventListener("click", () => {
+            calculateClosingBreakdown();
+            modalCashClosing.classList.remove("hidden");
+        });
+    }
+
+    // Escuchar entrada de teclado en Fondo de Caja
+    if (closingInitialCashInput) {
+        closingInitialCashInput.addEventListener("input", calculateClosingBreakdown);
+    }
+
+    // Controladores de cierre del modal de Cierre
+    [btnCloseClosingModal, btnCancelClosing].forEach(btn => {
+        if (btn) {
+            btn.addEventListener("click", () => {
+                if (modalCashClosing) modalCashClosing.classList.add("hidden");
+            });
+        }
+    });
+
+    // Confirmar y generar recibo de Cierre de Caja
+    if (btnExecuteClosing) {
+        btnExecuteClosing.addEventListener("click", () => {
+            const initialCash = parseFloat(closingInitialCashInput.value) || 0;
+            const totalClosingAmount = initialCash + salesCash + salesCard + salesTransfer + salesDelivery;
+            const totalVentas = salesCash + salesCard + salesTransfer + salesDelivery;
             const now = new Date();
             const dateStr = now.toLocaleDateString() + " " + now.toLocaleTimeString();
-            reportTimestamp.textContent = `Generado el: ${dateStr}`;
             
-            // Simulación financiera basada en el valor acumulado del día
-            const totalVentas = currentLiveSales;
-            const efectivo = totalVentas * 0.60;
-            const tarjeta = totalVentas * 0.40;
+            // Ocultar modal
+            if (modalCashClosing) modalCashClosing.classList.add("hidden");
             
-            const subtotalNeto = totalVentas / 1.15;
-            const isv15 = totalVentas - subtotalNeto;
+            // Rellenar reporte administrativo final de Cierre Z
+            const closingReportTimestamp = document.getElementById("closing-report-timestamp");
+            if (closingReportTimestamp) closingReportTimestamp.textContent = `Generado el: ${dateStr}`;
             
-            // Actualizar paneles visuales de caja
-            auditCashText.textContent = `L ${efectivo.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            auditCardText.textContent = `L ${tarjeta.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            auditTotalText.textContent = `L ${totalVentas.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-            // Actualizar barras
-            auditCashBar.style.width = "60%";
-            auditCardBar.style.width = "40%";
-
-            // Rellenar la boleta de auditoría
-            const reportDetails = auditReportOutput.querySelector(".report-details");
-            reportDetails.innerHTML = `
-                <li class="flex-between"><span>Transacciones Realizadas:</span><strong>${Math.floor(totalVentas / 350) + 12} Ventas</strong></li>
-                <li class="flex-between"><span>Subtotal Neto:</span><strong>L ${subtotalNeto.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></li>
-                <li class="flex-between"><span>Impuesto ISV 15%:</span><strong>L ${isv15.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></li>
-                <li class="flex-between"><span>Fondo de Caja Inicial:</span><strong>L 1,000.00</strong></li>
-                <li class="flex-between font-bold border-top"><span>Efectivo Esperado:</span><strong>L ${(efectivo + 1000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></li>
-                <li class="flex-between font-bold"><span>Venta Tarjeta Registrada:</span><strong>L ${tarjeta.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></li>
-                <li class="flex-between font-bold border-top text-emerald"><span>Cuadre de Caja:</span><strong>DIFERENCIA L 0.00 (OK)</strong></li>
-            `;
-
-            // Mostrar el reporte impreso administrativamente
-            auditReportOutput.classList.remove("hidden");
+            const closingReportDetails = document.getElementById("closing-report-details");
+            if (closingReportDetails) {
+                closingReportDetails.innerHTML = `
+                    <li class="flex-between"><span>Transacciones en Turno:</span><strong>${transactionCount} Ventas</strong></li>
+                    <li class="flex-between"><span>Fondo de Caja Inicial:</span><strong>L ${initialCash.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></li>
+                    <li class="flex-between"><span>Subtotal Ventas del Día:</span><strong>L ${totalVentas.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></li>
+                    <li class="flex-between border-top"><span>Efectivo Recaudado:</span><strong>L ${salesCash.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></li>
+                    <li class="flex-between"><span>Tarjeta Recaudada:</span><strong>L ${salesCard.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></li>
+                    <li class="flex-between"><span>Transferencias Recibidas:</span><strong>L ${salesTransfer.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></li>
+                    <li class="flex-between"><span>Notas / Órdenes de Entrega:</span><strong>L ${salesDelivery.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></li>
+                    <li class="flex-between font-bold border-top text-emerald"><span>MONTO TOTAL EN CAJA:</span><strong>L ${totalClosingAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></li>
+                    <li class="flex-between font-bold text-emerald"><span>Diferencia de Cuadre:</span><strong>L 0.00 (Cuadrado OK)</strong></li>
+                `;
+            }
             
-            // Desplazar levemente para que sea visible en dispositivos pequeños
-            auditReportOutput.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            // Mostrar reporte
+            if (closingReportOutput) {
+                closingReportOutput.classList.remove("hidden");
+                closingReportOutput.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
         });
     }
 
